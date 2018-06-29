@@ -3,6 +3,7 @@ package web.skietapp.controller;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -12,26 +13,33 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import web.skietapp.connection.DbUtil;
+import web.skietapp.model.Exercise;
 import web.skietapp.model.Solution;
+import web.skietapp.model.User;
 
-/**
- * Servlet implementation class ForBasicTests
- */
-@WebServlet("/ForBasicTests")
-public class ForBasicTests extends HttpServlet {
+@WebServlet("/")
+public class MainPage extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		try {
-			Connection conn = DbUtil.getConn();
+		try (Connection conn = DbUtil.getConn()) {
 			List<Solution> solutions = Solution.loadAllSolutions(conn, 5);
-			for (Solution sol : solutions) {
-				System.out.println(sol.getId());
+			List<String> users = new ArrayList<>();
+			List<String> exercises = new ArrayList<>();
+			for (Solution s : solutions) {
+				User u = User.loadUserById(conn, s.getUserId());
+				Exercise e = Exercise.loadExerciseById(conn, s.getExerciseId());
+				users.add(u.getUserName());
+				exercises.add(e.getTitle());
 			}
+			request.setAttribute("solutions", solutions);
+			request.setAttribute("exercises", exercises);
+			request.setAttribute("users", users);
+			getServletContext().getRequestDispatcher("/views/mainPage.jsp").forward(request, response);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			response.getWriter().append("Something went wrong");
 		}
 	}
 
