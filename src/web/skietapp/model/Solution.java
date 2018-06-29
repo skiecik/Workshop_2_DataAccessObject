@@ -84,6 +84,25 @@ public class Solution {
 		return solutions;
 	}
 
+	public static List<Solution> loadAllSolutions(Connection conn, int limit) throws SQLException {
+		String query = "SELECT * FROM solutions ORDER BY updated DESC LIMIT ?";
+		PreparedStatement pr = conn.prepareStatement(query);
+		pr.setInt(1, limit);
+		ResultSet rs = pr.executeQuery();
+		List<Solution> solutions = new ArrayList<>();
+		while (rs.next()) {
+			Solution solution = new Solution();
+			solution.id = rs.getInt("id");
+			solution.description = rs.getString("description");
+			solution.created = rs.getTimestamp("created");
+			solution.updated = rs.getTimestamp("updated");
+			solution.exerciseId = rs.getInt("exercise_id");
+			solution.userId = rs.getInt("user_id");
+			solutions.add(solution);
+		}
+		return solutions;
+	}
+	
 	public void deleteSolution(Connection conn) throws SQLException {
 		if (this.id != 0) {
 			String query = "DELETE FROM solutions WHERE id = ?";
