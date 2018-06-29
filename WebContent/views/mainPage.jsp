@@ -25,8 +25,8 @@
 <body>
 	<div class="containter">
 		<div class="row">
-			<div class="col-3"></div>
-			<div class="col-6 col-offset-3">
+			<div class="col-xl-3 col-sm-0 col-md-3" ></div>
+			<div class="col-xl-6 col-sm-12">
 				<table class="table">
 					<thead>
 						<tr>
