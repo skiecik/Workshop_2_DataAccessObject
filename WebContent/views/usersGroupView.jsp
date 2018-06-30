@@ -14,7 +14,9 @@
 			<c:forEach items="${users}" var="user">
 				<a href="<c:url value="/users/show?id=${user.getId()}"/>"
 					class="list-group-item list-group-item-action list-group-item-dark d-flex justify-content-between align-items-center"><c:out
-						value="${user.getUserName()}"/><span class="badge badge-primary badge-pill"><c:out value="${user.getEmail()}"></c:out></span></a>
+						value="${user.getUserName()}" /><span
+					class="badge badge-primary badge-pill"><c:out
+							value="${user.getEmail()}"></c:out></span></a>
 			</c:forEach>
 		</div>
 	</div>
