@@ -12,8 +12,15 @@
 
 	<div class="container">
 		<div class="row">
-			<div class="col-lg-8 text-center container">
-				<h3>Solution description: <br><br></h3>
+			<div class="card col-lg-4">
+				<div class="card-header"><c:out value="${exercise.getTitle()}"/></div>
+				<div class="card-body"><c:out value="${exercise.getDescription()}"/></div>
+			</div>
+			<div class="col-lg-8 text-center">
+				<h3>
+					Solution description: <br>
+					<br>
+				</h3>
 				<c:out value="${solution.getDescription() }" />
 			</div>
 		</div>

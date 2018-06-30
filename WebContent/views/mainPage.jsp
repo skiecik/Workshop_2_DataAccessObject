@@ -20,6 +20,7 @@
 							<th scope="col">User:</th>
 							<th scope="col">Updated:</th>
 							<th scope="col">Details:</th>
+						</tr>
 					</thead>
 					<tbody>
 						<c:forEach items="${solutions}" var="solution" varStatus="stat">
