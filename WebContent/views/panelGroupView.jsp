@@ -41,8 +41,8 @@
 											type="button" class="btn btn-primary">Edit</button> </a></td>
 								<td>
 									<button type="button" class="btn btn-danger"
-										data-toggle="modal" data-target="#myModal">Delete</button>
-									<div class="modal fade" id="myModal">
+										data-toggle="modal" data-target="#${group.getName()}">Delete</button>
+									<div class="modal fade" id="${group.getName()}">
 										<div class="modal-dialog modal-dialog-centered">
 											<div class="modal-content">
 

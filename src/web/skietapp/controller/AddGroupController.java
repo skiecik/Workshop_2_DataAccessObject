@@ -13,26 +13,26 @@ import javax.servlet.http.HttpServletResponse;
 import web.skietapp.connection.DbUtil;
 import web.skietapp.model.Group;
 
-@WebServlet("/panel/groups/delete")
-public class DeleteGroupController extends HttpServlet {
+@WebServlet("/panel/groups/add")
+public class AddGroupController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		String strId = request.getParameter("id");
-		try (Connection conn = DbUtil.getConn()){
-			
-			int id = Integer.parseInt(strId);
-			Group group = Group.loadGroupById(conn, id);
-			group.deleteGroup(conn);
-			response.sendRedirect(request.getContextPath() + "/panel/groups");
-			
-		} catch (SQLException e) {
-			
-		}
+		
+		getServletContext().getRequestDispatcher("/views/panelAddGroupView.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		String name = request.getParameter("groupName");
+		
+		try (Connection conn = DbUtil.getConn()) {
+			Group group = new Group(name);
+			group.saveToDB(conn);
+			response.sendRedirect(request.getContextPath() + "/panel/groups");
+		} catch (SQLException e) {
+			
+		}
 	}
 
 }
