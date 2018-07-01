@@ -3,7 +3,6 @@ package web.skietapp.controller;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -16,30 +15,36 @@ import web.skietapp.connection.DbUtil;
 import web.skietapp.model.Group;
 import web.skietapp.model.User;
 
-@WebServlet("/panel/users")
-public class UsersManagmentConrtoller extends HttpServlet {
+@WebServlet("/panel/users/add")
+public class AddUserController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		try (Connection conn = DbUtil.getConn()) {
-			List<User> users = User.loadAllUsers(conn);
-			List<String> groups = new ArrayList<>();
-			for (User u : users) {
-				Group gr = Group.loadGroupById(conn, u.getUserGroup());
-				groups.add(gr.getName());
-			}
-			request.setAttribute("users", users);
+		try (Connection conn = DbUtil.getConn()){
+			List<Group> groups = Group.loadAllGroups(conn);
 			request.setAttribute("groups", groups);
-			getServletContext().getRequestDispatcher("/views/panelUsersView.jsp").forward(request, response);
+			getServletContext().getRequestDispatcher("/views/panelAddUserView.jsp").forward(request, response);
 		} catch (SQLException e) {
 			
 		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+	
+		String name = request.getParameter("name");
+		String email = request.getParameter("email");
+		String password = request.getParameter("password");
+		String strUserGroup = request.getParameter("groupId");
 		
+		try (Connection conn = DbUtil.getConn()){
+			int userGroup = Integer.parseInt(strUserGroup);
+			User user = new User(name, email, password, userGroup);
+			user.saveToDB(conn);
+			response.sendRedirect(request.getContextPath() + "/panel/users");
+		} catch (SQLException e) {
+			
+		}
 	}
 
 }

@@ -3,8 +3,6 @@ package web.skietapp.controller;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,33 +11,26 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import web.skietapp.connection.DbUtil;
-import web.skietapp.model.Group;
-import web.skietapp.model.User;
+import web.skietapp.model.Exercise;
 
-@WebServlet("/panel/users")
-public class UsersManagmentConrtoller extends HttpServlet {
+@WebServlet("/panel/exercises/delete")
+public class DeleteExerciseController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		String strId = request.getParameter("id");
 		try (Connection conn = DbUtil.getConn()) {
-			List<User> users = User.loadAllUsers(conn);
-			List<String> groups = new ArrayList<>();
-			for (User u : users) {
-				Group gr = Group.loadGroupById(conn, u.getUserGroup());
-				groups.add(gr.getName());
-			}
-			request.setAttribute("users", users);
-			request.setAttribute("groups", groups);
-			getServletContext().getRequestDispatcher("/views/panelUsersView.jsp").forward(request, response);
+			int id = Integer.parseInt(strId);
+			Exercise exercise = Exercise.loadExerciseById(conn, id);
+			exercise.deleteExercise(conn);
+			response.sendRedirect(request.getContextPath() + "/panel/exercises");
 		} catch (SQLException e) {
 			
 		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		
 	}
 
 }

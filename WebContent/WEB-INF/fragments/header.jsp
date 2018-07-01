@@ -37,7 +37,7 @@
 			<ul class="navbar-nav">
 				<li class="nav-item"><a class="nav-link"
 					href="<c:url value="/groups"/>" >Groups</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+				<li class="nav-item"><a class="nav-link" href="<c:url value="/panel"/>">Panel</a></li>
 				<li class="nav-item"><a class="nav-link" href="#">Link</a></li>
 			</ul>
 		</div>
