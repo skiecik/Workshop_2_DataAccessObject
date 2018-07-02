@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import web.skietapp.connection.DbUtil;
+import web.skietapp.dao.ExerciseDao;
 import web.skietapp.model.Exercise;
 
 @WebServlet("/panel/exercises/edit")
@@ -23,7 +24,7 @@ public class EditExerciseController extends HttpServlet {
 		try (Connection conn = DbUtil.getConn()) {
 			
 			int id = Integer.parseInt(strId);
-			Exercise exercise = Exercise.loadExerciseById(conn, id);
+			Exercise exercise = ExerciseDao.readExerciseById(conn, id);
 			request.setAttribute("exercise", exercise);
 			getServletContext().getRequestDispatcher("/views/panelEditExerciseView.jsp").forward(request, response);
 		} catch (SQLException e) {
@@ -39,10 +40,10 @@ public class EditExerciseController extends HttpServlet {
 		
 		try (Connection conn = DbUtil.getConn()) {
 			int id = Integer.parseInt(strId);
-			Exercise exercise = Exercise.loadExerciseById(conn, id);
+			Exercise exercise = ExerciseDao.readExerciseById(conn, id);
 			exercise.setTitle(title);
 			exercise.setDescription(description);
-			exercise.saveToDB(conn);
+			ExerciseDao.updateExercise(conn, exercise);
 			response.sendRedirect(request.getContextPath() + "/panel/exercises");
 		} catch (SQLException e) {
 			

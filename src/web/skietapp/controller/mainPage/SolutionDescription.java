@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import web.skietapp.connection.DbUtil;
+import web.skietapp.dao.ExerciseDao;
 import web.skietapp.model.Exercise;
 import web.skietapp.model.Solution;
 
@@ -25,7 +26,7 @@ public class SolutionDescription extends HttpServlet {
 			
 			int id = Integer.parseInt(strId);
 			Solution solution = Solution.loadSolutionById(conn, id);
-			Exercise exercise = Exercise.loadExerciseById(conn, solution.getExerciseId());
+			Exercise exercise = ExerciseDao.readExerciseById(conn, solution.getExerciseId());
 			request.setAttribute("solution", solution);
 			request.setAttribute("exercise", exercise);
 			getServletContext().getRequestDispatcher("/views/solutionDescriptionView.jsp").forward(request, response);

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import web.skietapp.connection.DbUtil;
+import web.skietapp.dao.ExerciseDao;
 import web.skietapp.model.Exercise;
 
 @WebServlet("/panel/exercises/delete")
@@ -22,8 +23,8 @@ public class DeleteExerciseController extends HttpServlet {
 		String strId = request.getParameter("id");
 		try (Connection conn = DbUtil.getConn()) {
 			int id = Integer.parseInt(strId);
-			Exercise exercise = Exercise.loadExerciseById(conn, id);
-			exercise.deleteExercise(conn);
+			Exercise exercise = ExerciseDao.readExerciseById(conn, id);
+			ExerciseDao.deleteExercise(conn, exercise);
 			response.sendRedirect(request.getContextPath() + "/panel/exercises");
 		} catch (SQLException e) {
 			

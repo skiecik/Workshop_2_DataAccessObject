@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import web.skietapp.connection.DbUtil;
+import web.skietapp.dao.ExerciseDao;
 import web.skietapp.model.Exercise;
 
 @WebServlet("/panel/exercises")
@@ -21,7 +22,7 @@ public class ExerciseManagmentController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		try (Connection conn = DbUtil.getConn()) {
-			List<Exercise> exercises = Exercise.loadAllExercises(conn);
+			List<Exercise> exercises = ExerciseDao.readAllExercises(conn);
 			for (Exercise e : exercises) {
 				String desc = e.getDescription().replaceAll("\n", "<br>");
 				e.setDescription(desc);

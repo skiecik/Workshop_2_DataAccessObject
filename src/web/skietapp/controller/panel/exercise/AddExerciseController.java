@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import web.skietapp.connection.DbUtil;
+import web.skietapp.dao.ExerciseDao;
 import web.skietapp.model.Exercise;
 
 @WebServlet("/panel/exercises/add")
@@ -26,11 +27,10 @@ public class AddExerciseController extends HttpServlet {
 	
 		String title = request.getParameter("title");
 		String description = request.getParameter("description");
-		String desc = description.replaceAll("\n", "<br>");
 		
-		Exercise exercise = new Exercise(title, desc);
+		Exercise exercise = new Exercise(title, description);
 		try (Connection conn = DbUtil.getConn()) {
-			exercise.saveToDB(conn);
+			ExerciseDao.saveExercise(conn, exercise);
 			response.sendRedirect(request.getContextPath() + "/panel/exercises");
 		} catch (SQLException e) {
 			
