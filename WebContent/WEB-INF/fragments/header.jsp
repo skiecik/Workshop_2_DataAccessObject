@@ -26,7 +26,7 @@
 	<header>
 	<div class="container">
 		<nav class="navbar navbar-expand-md bg-dark navbar-dark"> <a
-			class="navbar-brand" href="/Workshop_3_DataAccessObject/">Home Page</a>
+			class="navbar-brand" href="<c:url value="/"/>">Home Page</a>
 
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
 			data-target="#collapsibleNavbar">
