@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import web.skietapp.connection.DbUtil;
 import web.skietapp.dao.ExerciseDao;
+import web.skietapp.dao.SolutionDao;
 import web.skietapp.dao.UserDao;
 import web.skietapp.model.Exercise;
 import web.skietapp.model.Solution;
@@ -27,7 +28,7 @@ public class MainPage extends HttpServlet {
 			throws ServletException, IOException {
 
 		try (Connection conn = DbUtil.getConn()) {
-			List<Solution> solutions = Solution.loadAllSolutions(conn, 5);
+			List<Solution> solutions = SolutionDao.readAllSolutions(conn, 5);
 			List<String> users = new ArrayList<>();
 			List<String> exercises = new ArrayList<>();
 			for (Solution s : solutions) {

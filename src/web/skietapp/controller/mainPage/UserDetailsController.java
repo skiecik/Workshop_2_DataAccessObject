@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import web.skietapp.connection.DbUtil;
 import web.skietapp.dao.ExerciseDao;
+import web.skietapp.dao.SolutionDao;
 import web.skietapp.dao.UserDao;
 import web.skietapp.model.Exercise;
 import web.skietapp.model.Solution;
@@ -30,7 +31,7 @@ public class UserDetailsController extends HttpServlet {
 		try (Connection conn = DbUtil.getConn()) {
 			int id = Integer.parseInt(strId);
 			User user = UserDao.readUserById(conn, id);
-			List<Solution> solutions = Solution.loadAllByUserId(conn, user.getId());
+			List<Solution> solutions = SolutionDao.readAllByUserId(conn, user.getId());
 			List<String> exercises = new ArrayList<>();
 			
 			for (Solution solution : solutions) {
