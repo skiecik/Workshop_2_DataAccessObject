@@ -1,4 +1,4 @@
-package web.skietapp.controller;
+package web.skietapp.controller.panel.exercise;
 
 import java.io.IOException;
 import java.sql.Connection;

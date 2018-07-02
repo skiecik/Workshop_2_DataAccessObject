@@ -1,4 +1,4 @@
-package web.skietapp.controller;
+package web.skietapp.controller.panel.exercise;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -13,28 +13,24 @@ import javax.servlet.http.HttpServletResponse;
 import web.skietapp.connection.DbUtil;
 import web.skietapp.model.Exercise;
 
-@WebServlet("/panel/exercises/add")
-public class AddExerciseController extends HttpServlet {
+@WebServlet("/panel/exercises/delete")
+public class DeleteExerciseController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		getServletContext().getRequestDispatcher("/views/panelAddExerciseView.jsp").forward(request, response);
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
-		String title = request.getParameter("title");
-		String description = request.getParameter("description");
-		String desc = description.replaceAll("\n", "<br>");
-		
-		Exercise exercise = new Exercise(title, desc);
+		String strId = request.getParameter("id");
 		try (Connection conn = DbUtil.getConn()) {
-			exercise.saveToDB(conn);
+			int id = Integer.parseInt(strId);
+			Exercise exercise = Exercise.loadExerciseById(conn, id);
+			exercise.deleteExercise(conn);
 			response.sendRedirect(request.getContextPath() + "/panel/exercises");
 		} catch (SQLException e) {
 			
 		}
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	}
 
 }

@@ -1,4 +1,4 @@
-package web.skietapp.controller;
+package web.skietapp.controller.mainPage;
 
 import java.io.IOException;
 import java.sql.Connection;

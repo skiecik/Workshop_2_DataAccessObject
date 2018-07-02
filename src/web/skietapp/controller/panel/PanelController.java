@@ -1,4 +1,4 @@
-package web.skietapp.controller;
+package web.skietapp.controller.panel;
 
 import java.io.IOException;
 import javax.servlet.ServletException;

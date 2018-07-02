@@ -1,4 +1,4 @@
-package web.skietapp.controller;
+package web.skietapp.controller.mainPage;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -12,20 +12,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import web.skietapp.connection.DbUtil;
-import web.skietapp.model.Group;
+import web.skietapp.model.User;
 
-@WebServlet("/panel/groups")
-public class GroupsManagmentController extends HttpServlet {
+@WebServlet("/groups/show")
+public class UsersFromGroupController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		String strId = request.getParameter("id");
+		
 		try (Connection conn = DbUtil.getConn()){
-			List<Group> groups = Group.loadAllGroups(conn);
-			request.setAttribute("groups", groups);
-			getServletContext().getRequestDispatcher("/views/panelGroupView.jsp").forward(request, response);
+			int id = Integer.parseInt(strId);
+			List<User> users = User.loadAllByGroupId(conn, id);
+			request.setAttribute("users", users);
+			getServletContext().getRequestDispatcher("/views/usersGroupView.jsp").forward(request, response);
 		} catch (SQLException e) {
-			
+			response.getWriter().append("Something goes wrong");
 		}
 	}
 

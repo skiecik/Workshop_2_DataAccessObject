@@ -1,9 +1,8 @@
-package web.skietapp.controller;
+package web.skietapp.controller.panel.group;
 
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,27 +11,28 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import web.skietapp.connection.DbUtil;
-import web.skietapp.model.User;
+import web.skietapp.model.Group;
 
-@WebServlet("/groups/show")
-public class UsersFromGroupController extends HttpServlet {
+@WebServlet("/panel/groups/add")
+public class AddGroupController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		String strId = request.getParameter("id");
 		
-		try (Connection conn = DbUtil.getConn()){
-			int id = Integer.parseInt(strId);
-			List<User> users = User.loadAllByGroupId(conn, id);
-			request.setAttribute("users", users);
-			getServletContext().getRequestDispatcher("/views/usersGroupView.jsp").forward(request, response);
-		} catch (SQLException e) {
-			response.getWriter().append("Something goes wrong");
-		}
+		getServletContext().getRequestDispatcher("/views/panelAddGroupView.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		String name = request.getParameter("groupName");
+		
+		try (Connection conn = DbUtil.getConn()) {
+			Group group = new Group(name);
+			group.saveToDB(conn);
+			response.sendRedirect(request.getContextPath() + "/panel/groups");
+		} catch (SQLException e) {
+			
+		}
 	}
 
 }

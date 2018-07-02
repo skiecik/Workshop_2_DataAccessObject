@@ -1,4 +1,4 @@
-package web.skietapp.controller;
+package web.skietapp.controller.mainPage;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -11,10 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import web.skietapp.connection.DbUtil;
-import web.skietapp.model.User;
+import web.skietapp.model.Exercise;
+import web.skietapp.model.Solution;
 
-@WebServlet("/panel/users/delete")
-public class DeleteUserController extends HttpServlet {
+@WebServlet("/solution-description")
+public class SolutionDescription extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -23,12 +24,17 @@ public class DeleteUserController extends HttpServlet {
 		try (Connection conn = DbUtil.getConn()){
 			
 			int id = Integer.parseInt(strId);
-			User user= User.loadUserById(conn, id);
-			user.deleteUser(conn);
-			response.sendRedirect(request.getContextPath() + "/panel/users");
-			
+			Solution solution = Solution.loadSolutionById(conn, id);
+			Exercise exercise = Exercise.loadExerciseById(conn, solution.getExerciseId());
+			request.setAttribute("solution", solution);
+			request.setAttribute("exercise", exercise);
+			getServletContext().getRequestDispatcher("/views/solutionDescriptionView.jsp").forward(request, response);
 		} catch (SQLException e) {
-			
+			response.getWriter().append("Sorry, something goes wrong");
+		} catch (NumberFormatException e) {
+			response.getWriter().append("Sorry, wrong parameter.");
+		} catch (NullPointerException e) {
+			response.getWriter().append("Sorry, there is no parameter");
 		}
 	}
 
