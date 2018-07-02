@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import web.skietapp.connection.DbUtil;
+import web.skietapp.dao.GroupDao;
 import web.skietapp.model.Group;
 
 @WebServlet("/panel/groups/add")
@@ -28,7 +29,7 @@ public class AddGroupController extends HttpServlet {
 		
 		try (Connection conn = DbUtil.getConn()) {
 			Group group = new Group(name);
-			group.saveToDB(conn);
+			GroupDao.saveGroup(conn, group);
 			response.sendRedirect(request.getContextPath() + "/panel/groups");
 		} catch (SQLException e) {
 			

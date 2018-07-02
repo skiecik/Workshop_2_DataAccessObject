@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import web.skietapp.connection.DbUtil;
+import web.skietapp.dao.GroupDao;
 import web.skietapp.model.Group;
 
 @WebServlet("/panel/groups/delete")
@@ -23,8 +24,8 @@ public class DeleteGroupController extends HttpServlet {
 		try (Connection conn = DbUtil.getConn()){
 			
 			int id = Integer.parseInt(strId);
-			Group group = Group.loadGroupById(conn, id);
-			group.deleteGroup(conn);
+			Group group = GroupDao.readGroupById(conn, id);
+			GroupDao.deleteGroup(conn, group);
 			response.sendRedirect(request.getContextPath() + "/panel/groups");
 			
 		} catch (SQLException e) {

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import web.skietapp.connection.DbUtil;
+import web.skietapp.dao.GroupDao;
 import web.skietapp.model.Group;
 
 @WebServlet("/panel/groups/edit")
@@ -23,7 +24,7 @@ public class EditGroupController extends HttpServlet {
 		
 		try (Connection conn = DbUtil.getConn()){
 			int id = Integer.parseInt(strId);
-			Group group = Group.loadGroupById(conn, id);
+			Group group = GroupDao.readGroupById(conn, id);
 			request.setAttribute("group", group);
 			getServletContext().getRequestDispatcher("/views/panelEditGroup.jsp").forward(request, response);
 		} catch (SQLException e) {
@@ -38,9 +39,9 @@ public class EditGroupController extends HttpServlet {
 		
 		try (Connection conn = DbUtil.getConn()){
 			int id = Integer.parseInt(strId);
-			Group group = Group.loadGroupById(conn, id);
+			Group group = GroupDao.readGroupById(conn, id);
 			group.setName(name);
-			group.saveToDB(conn);
+			GroupDao.updateGroup(conn, group);
 			response.sendRedirect(request.getContextPath() + "/panel/groups");
 		} catch (SQLException e) {
 			

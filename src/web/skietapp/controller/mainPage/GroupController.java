@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import web.skietapp.connection.DbUtil;
+import web.skietapp.dao.GroupDao;
 import web.skietapp.model.Group;
 
 @WebServlet("/groups")
@@ -21,7 +22,7 @@ public class GroupController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		try (Connection conn = DbUtil.getConn()){
-			List<Group> groups = Group.loadAllGroups(conn);
+			List<Group> groups = GroupDao.readAllGroups(conn);
 			request.setAttribute("groups", groups);
 			getServletContext().getRequestDispatcher("/views/groupsView.jsp").forward(request, response);
 			

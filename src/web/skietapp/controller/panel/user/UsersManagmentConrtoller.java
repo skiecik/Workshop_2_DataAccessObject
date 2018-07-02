@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import web.skietapp.connection.DbUtil;
+import web.skietapp.dao.GroupDao;
+import web.skietapp.dao.UserDao;
 import web.skietapp.model.Group;
 import web.skietapp.model.User;
 
@@ -23,10 +25,10 @@ public class UsersManagmentConrtoller extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		try (Connection conn = DbUtil.getConn()) {
-			List<User> users = User.loadAllUsers(conn);
+			List<User> users = UserDao.readAllUsers(conn);
 			List<String> groups = new ArrayList<>();
 			for (User u : users) {
-				Group gr = Group.loadGroupById(conn, u.getUserGroup());
+				Group gr = GroupDao.readGroupById(conn, u.getUserGroup());
 				groups.add(gr.getName());
 			}
 			request.setAttribute("users", users);
@@ -38,8 +40,6 @@ public class UsersManagmentConrtoller extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		
 	}
 
 }

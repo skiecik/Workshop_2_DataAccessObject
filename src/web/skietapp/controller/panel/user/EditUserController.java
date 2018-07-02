@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import web.skietapp.connection.DbUtil;
+import web.skietapp.dao.GroupDao;
+import web.skietapp.dao.UserDao;
 import web.skietapp.model.Group;
 import web.skietapp.model.User;
 
@@ -25,9 +27,9 @@ public class EditUserController extends HttpServlet {
 		
 		try (Connection conn = DbUtil.getConn()) {
 			int id = Integer.parseInt(strId);
-			User user = User.loadUserById(conn, id);
-			List<Group> groups = Group.loadAllGroups(conn);
-			Group group = Group.loadGroupById(conn, user.getUserGroup());
+			User user = UserDao.readUserById(conn, id);
+			List<Group> groups = GroupDao.readAllGroups(conn);
+			Group group = GroupDao.readGroupById(conn, user.getUserGroup());
 			request.setAttribute("user", user);
 			request.setAttribute("groups", groups);
 			request.setAttribute("group", group);
@@ -48,14 +50,14 @@ public class EditUserController extends HttpServlet {
 		try (Connection conn = DbUtil.getConn()){
 			int userGroup = Integer.parseInt(strUserGroup);
 			int id = Integer.parseInt(strId);
-			User user = User.loadUserById(conn, id);
+			User user = UserDao.readUserById(conn, id);
 			user.setUserName(name);
 			user.setEmail(email);
 			user.setUserGroup(userGroup);
 			if (!password.isEmpty() && !password.equals(null)) {
 				user.setPassword(password);
 			}
-			user.saveToDB(conn);
+			UserDao.updateUser(conn, user);
 			response.sendRedirect(request.getContextPath() + "/panel/users");
 		} catch (SQLException e) {
 			

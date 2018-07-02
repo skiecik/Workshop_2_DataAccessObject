@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import web.skietapp.connection.DbUtil;
+import web.skietapp.dao.UserDao;
 import web.skietapp.model.User;
 
 @WebServlet("/groups/show")
@@ -24,7 +25,7 @@ public class UsersFromGroupController extends HttpServlet {
 		
 		try (Connection conn = DbUtil.getConn()){
 			int id = Integer.parseInt(strId);
-			List<User> users = User.loadAllByGroupId(conn, id);
+			List<User> users = UserDao.readAllUsersByGroupId(conn, id);
 			request.setAttribute("users", users);
 			getServletContext().getRequestDispatcher("/views/usersGroupView.jsp").forward(request, response);
 		} catch (SQLException e) {

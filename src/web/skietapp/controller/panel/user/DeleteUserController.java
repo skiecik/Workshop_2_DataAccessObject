@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import web.skietapp.connection.DbUtil;
+import web.skietapp.dao.UserDao;
 import web.skietapp.model.User;
 
 @WebServlet("/panel/users/delete")
@@ -23,8 +24,8 @@ public class DeleteUserController extends HttpServlet {
 		try (Connection conn = DbUtil.getConn()){
 			
 			int id = Integer.parseInt(strId);
-			User user= User.loadUserById(conn, id);
-			user.deleteUser(conn);
+			User user= UserDao.readUserById(conn, id);
+			UserDao.deleteUser(conn, user);
 			response.sendRedirect(request.getContextPath() + "/panel/users");
 			
 		} catch (SQLException e) {

@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import web.skietapp.connection.DbUtil;
+import web.skietapp.dao.GroupDao;
+import web.skietapp.dao.UserDao;
 import web.skietapp.model.Group;
 import web.skietapp.model.User;
 
@@ -22,7 +24,7 @@ public class AddUserController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		try (Connection conn = DbUtil.getConn()){
-			List<Group> groups = Group.loadAllGroups(conn);
+			List<Group> groups = GroupDao.readAllGroups(conn);
 			request.setAttribute("groups", groups);
 			getServletContext().getRequestDispatcher("/views/panelAddUserView.jsp").forward(request, response);
 		} catch (SQLException e) {
@@ -40,7 +42,7 @@ public class AddUserController extends HttpServlet {
 		try (Connection conn = DbUtil.getConn()){
 			int userGroup = Integer.parseInt(strUserGroup);
 			User user = new User(name, email, password, userGroup);
-			user.saveToDB(conn);
+			UserDao.saveUser(conn, user);
 			response.sendRedirect(request.getContextPath() + "/panel/users");
 		} catch (SQLException e) {
 			
